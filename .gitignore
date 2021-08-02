@@ -3,4 +3,5 @@
 *.pkl
 *.txt
 .vscode
+.idea
 __pycache__
