@@ -64,8 +64,9 @@ def generate_txtytwth(gt_label, w, h, s):
 
 def gt_creator(img_size, stride, num_classes, label_lists=[]):
     # prepare the all empty gt datas
-    h = w = img_size
-    
+    #h = w = img_size
+    w = img_size[0]
+    h = img_size[1]
     ws = w // stride
     hs = h // stride
     s = stride

@@ -18,7 +18,7 @@ from pycocotools.coco import COCO
 
 from data import create_gt
 
-
+bigData_dir = '/media/junchi/Data/BigData2021/dataset/train_COCO/detection'
 class_labels = ("Motor Vehicle", "Non-motorized Vehicle", "Pedestrian", "Traffic Light-Red Light",
                 "Traffic Light-Yellow Light", "Traffic Light-Green Light", "Traffic Light-Off")
 
@@ -30,10 +30,11 @@ class BigDataDataset(Dataset):
     Dataset class
     '''
     def __init__(self,
-                 root_dir='/media/junchi/Data/BigData2021/dataset/train_COCO/detection',
+                 data_dir='/media/junchi/Data/BigData2021/dataset/train_COCO/detection',
                  img_dir="data",
                  json_file="train.json",
                  img_size=(1280, 720),
+                 name = "bigData2021",
                  train=True,
                  stride=32,
                  transform=None,
@@ -41,7 +42,7 @@ class BigDataDataset(Dataset):
                  mosaic=False):
         '''
         Args:
-            root_dir: the root dir for the dataset
+            data_dir: the root dir for the dataset
             img_dir: the dir for all images
             json_file: the file of all annotations
             train: training dataset or test dataset
@@ -50,7 +51,8 @@ class BigDataDataset(Dataset):
             transform: simple transform as data augmentation
             mosaic: use mosaic for data augmentation
         '''
-        self.root_dir = root_dir
+        self.name = name
+        self.root_dir = data_dir
         self.img_dir = img_dir
         self.json_file = json_file
         self.train = train
@@ -117,7 +119,6 @@ class BigDataDataset(Dataset):
 
         # load image and preprocess
         img_file = os.path.join(self.root_dir, self.img_dir, '{:05d}'.format(id_)+'.jpg')
-        print("image file = " + img_file)
         img = cv2.imread(img_file)
 
         assert img is not None

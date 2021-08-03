@@ -16,6 +16,7 @@ from data import *
 from utils.augmentations import SSDAugmentation, ColorAugmentation
 from utils.cocoapi_evaluator import COCOAPIEvaluator
 from utils.vocapi_evaluator import VOCAPIEvaluator
+from utils.bigData_evaluator import BigDataEvaluator
 from utils.modules import ModelEMA
 
 def parse_args():
@@ -24,8 +25,8 @@ def parse_args():
                         help='centernet_plus, baseline')
     parser.add_argument('-bk', '--backbone', default='r18',
                         help='r18, r34, r50, r101')
-    parser.add_argument('-d', '--dataset', default='voc',
-                        help='voc or coco')
+    parser.add_argument('-d', '--dataset', default='bigData',
+                        help='voc or coco or bigdata')
     parser.add_argument('--cuda', action='store_true', default=False,
                         help='use cuda.')
     parser.add_argument('--mosaic', action='store_true', default=False,
@@ -152,9 +153,30 @@ def train():
                         device=device,
                         transform=BaseTransform(val_size)
                         )
-    
+
+    elif args.dataset=='bigData':
+        data_dir = bigData_dir
+        num_classes = len(class_labels)
+
+        dataset = BigDataDataset(
+            data_dir = data_dir,
+            img_size = (1280, 720),
+            train=True,
+            stride = 4,
+            transform=SSDAugmentation(train_size),
+            base_transform=ColorAugmentation(train_size),
+            mosaic=args.mosaic
+        )
+
+        evaluator = BigDataEvaluator(
+                        data_dir=data_dir,
+                        img_size=(1280, 720),
+                        device=device,
+                        transform=BaseTransform(val_size)
+                        )
+
     else:
-        print('unknow dataset !! Only support voc and coco !!')
+        print('unknow dataset !! Only support bigData, voc and coco !!')
         exit(0)
     
     print('Training model on:', dataset.name)

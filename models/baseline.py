@@ -109,7 +109,9 @@ class Baseline(nn.Module):
 
 
     def create_grid(self, input_size):
-        h = w = input_size
+        #h = w = input_size
+        w = input_size[0]
+        h = input_size[1]
         # generate grid cells
         ws, hs = w // self.stride, h // self.stride
         grid_y, grid_x = torch.meshgrid([torch.arange(hs), torch.arange(ws)])

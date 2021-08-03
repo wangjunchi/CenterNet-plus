@@ -1,0 +1,1 @@
+python train.py --cuda -d bigData -v baseline -bk r18 --batch_size 32 --ema #1>1-coco-centernet-p-r18-ema.txt 2>2.txt &
